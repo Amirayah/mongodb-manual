@@ -1,2 +1,44 @@
 Common questions about MongoDB
 
+1. Retrieve only the queried element in an object array in MongoDB collection.
+
+	MongoDB 2.2's new $elemMatch projection operator provides another way to alter the returned document to contain only the first matched shapes element.
+
+2.How to Update Multiple Array Elements in mongodb
+	
+	With the release of MongoDB 3.6 ( and available in the development branch from MongoDB 3.5.12 ) you can now update multiple array elements in a single request.
+
+	This uses the filtered positional $[<identifier>] update operator syntax introduced in this version:
+	The "arrayFilters" as passed to the options for .update() or even  .updateOne(), .updateMany(), .findOneAndUpdate() or .bulkWrite() method specifies the conditions to match on the identifier given in the update statement. Any elements that match the condition given will be updated.
+
+3. Multiple Counts with single query in mongodb
+	
+	You can try below $facet aggregation
+
+	$count aggregation will always give you the counts for only single matching ($match) condition. So you need to further divide your each count into multiple section and that's what the $facet provides by processes multiple aggregation pipelines within a single stage on the same set of input documents.
+
+4.How do I drop a MongoDB database from the command line?
+	
+	Here are some use full delete operations for mongodb using mongo shell
+
+	To delete particular document in collections: db.mycollection.remove( {name:"stack"} )
+
+	To delete all documents in collections: db.mycollection.remove()
+
+	To delete collection :  db.mycollection.drop()
+
+	to delete database : first go to that database by use mydb command and then
+
+	db.dropDatabase()
+
+	directly from command prompt or blash : 
+	mongo mydb --eval "db.dropDatabase()
+
+5. How to count objects in an array in mongodb?
+	
+	You just need to use $size along with the $filter aggregation operator
+
+6. MongoDB: Check if value is null or the array is empty
+	
+	You could use the $or query operator with a check for each condition
+
