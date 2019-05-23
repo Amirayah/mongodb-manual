@@ -41,4 +41,5 @@ Common questions about MongoDB
 6. MongoDB: Check if value is null or the array is empty
 	
 	You could use the $or query operator with a check for each condition
+//Extra information
 
