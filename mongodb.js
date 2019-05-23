@@ -200,3 +200,94 @@ WriteResult(
 )
 
 //WriteResult({"nMatched": 1, "nUpserted": 0, "nModified: 1"})
+//successful update
+
+//updating an embedded value
+//we can update using the dot notation to specify the field
+//we want to update
+>db.potions.update(
+	{"name": "Oishi"},
+	{"$set": {"ratings.strength": 5}}
+)
+//WriteResult({"nMatched": 1,"nUpserted": 0,"nModified": 1})
+
+//removing the first or last value of an array
+//the $pop ooperator will remove either the first or last value
+//of an array
+>db.potions.update(
+	{"name": "Oishi"},
+	{"$pop": {"ingredients": 1}}
+)
+//result "ingredients": ["hippo", "secret"]
+//removes the first element -1
+//removes the last element 1
+
+//the $push operator will add a value to the the end of an array
+
+>db.potions.update(
+	{"name": "Oishi"},
+	{"$push": {"ingredients": "crack"}}
+)
+
+//result "ingredients": ["hippo","secret","crack"]
+
+//the $pull operator will remove
+//any instance of a value from an array.
+>db.potions.update(
+	{"name": "Oishi"},
+	{"$pull": {"ingredients": "secret"}}
+)
+//result "ingredients": ["secret"]
+
+//Materializing Potions: Query operators
+
+//finding potions that are less than $20
+//$lt : less than
+>db.potions.find({"price": {"$lt": 20}})
+//return values less than 20
+//$gt: greater than
+>db.potions.find({"price": {"$gt": 20}})
+
+//range queries on an array
+// We can use $elemMatch to make sure at least 1 element matches all criteria.
+>db.potions.find(
+	{"price": {"$elemMatch": {"$gt":8, "$lt": 20}}}
+)
+
+//continuing to iterate through the cursor
+//typing "it" will display the next 20 documents in the cursor
+>it
+//cursor methods
+>db.potions.find().count()
+//it returns the curso object
+>db.potions.find().sort({"price": 1})
+//we can use the sort() cursor method to sort documents
+//-1 descending
+//1 ascending
+
+//basic pagination
+//limitining and skipping over documents
+//limit() method
+>db.potions.find().limit(3)
+>db.potions.find().skip(3).limit(3)
+
+//Morphing Models: Data modeling
+
+//inserting referenced documents
+>db.vendors.insert(
+{
+	"_id": "Off",
+	"phone": "6666666666",
+	"organic": true
+}
+)
+>db.potions.insert(
+{
+	"name": "Oishi",
+	"vendor_id": "Off"//referenced document
+	...
+}
+	)
+
+//finding the number of potions per vendor
+> db.potions.find({}, {"name": true, "vendor": true})
